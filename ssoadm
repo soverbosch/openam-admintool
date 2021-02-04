@@ -1,0 +1,63 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2015, Sarris Overbosch <soverbosch@hotmail.com>
+
+import urllib
+import requests
+import threading
+import os
+from ansible.module_utils.basic import *
+
+
+DOCUMENTATION = '''
+---
+module: ssoadmin
+version_added: "0.1"
+author: Sarris Overbosch
+short_description: Configure OpenAM
+description:
+   - This module does the same as what ssoadm does, configuring OpenAM.
+options:
+  username:
+    description:
+      - The name of the user with admin rights
+    required: true
+  password:
+    description:
+      - The password used to authenticate the user
+    required: true
+  batchfile:
+    description:
+      - The file containing the commands to issue.
+    required: true
+'''
+
+EXAMPLES = '''
+'''
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            username  = dict(default='amadmin', required=True),
+            password  = dict(default=None, required=True),
+            batchfile = dict(default=None, required=True)),
+        supports_check_mode=True,
+    )
+
+    username = module.params['username']
+    password = module.params['password']
+    batchfile = module.params['batchfile']
+
+    # bootstrap? of zelf de benodigde gegevens meegeven als argumenten?
+
+    if not os.path.exists(base_dir):
+        module.fail_json('Configuration base directory ' + base_dir + ' does not exist.')
+
+    if response.status_code == requests.codes.ok:
+        module.exit_json(changed=True, msg=response.text)
+    else:
+        module.fail_json(msg='Configuration failed!' + response.text)
+
+main()
